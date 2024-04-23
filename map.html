@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_8725a4b1f85dc1bea49d79bc6061b5a8 {
+                #map_dde0944375c9fe2bedc33a7c563e22eb {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,16 +39,16 @@
 <body>
     
     
-            <div class="folium-map" id="map_8725a4b1f85dc1bea49d79bc6061b5a8" ></div>
+            <div class="folium-map" id="map_dde0944375c9fe2bedc33a7c563e22eb" ></div>
         
 </body>
 <script>
     
     
-            var map_8725a4b1f85dc1bea49d79bc6061b5a8 = L.map(
-                "map_8725a4b1f85dc1bea49d79bc6061b5a8",
+            var map_dde0944375c9fe2bedc33a7c563e22eb = L.map(
+                "map_dde0944375c9fe2bedc33a7c563e22eb",
                 {
-                    center: [39.9334, 32.8597],
+                    center: [39.94059999999998, 32.86689999999998],
                     crs: L.CRS.EPSG3857,
                     zoom: 15,
                     zoomControl: true,
@@ -60,39 +60,24 @@
 
         
     
-            var tile_layer_3db3035c92eb780ef1d550ebf6d78a11 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            var tile_layer_85e2fbe55570dfd8a6ba98d556e840e5 = L.tileLayer(
+                "https://api.mapbox.com/styles/v1/kutayoksuzz/clm6kss5200yr01r4fkao7vzq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia3V0YXlva3N1enoiLCJhIjoiY2xtNmVtZDc0MGJwcDNkbXZoOXFleDdrNiJ9.HwKLX08_1xUhK-nJI2X1HQ",
+                {"attribution": "Map data \u00a9 Mapbox", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_3db3035c92eb780ef1d550ebf6d78a11.addTo(map_8725a4b1f85dc1bea49d79bc6061b5a8);
+            tile_layer_85e2fbe55570dfd8a6ba98d556e840e5.addTo(map_dde0944375c9fe2bedc33a7c563e22eb);
         
     
-            var marker_fa9de0d1d81d25ca85cef6eff648df89 = L.marker(
-                [39.9334, 32.8597],
+            var marker_6bc26bda54aca221709bd9ea9a9e203d = L.marker(
+                [39.94059999999998, 32.86689999999998],
                 {}
-            ).addTo(map_8725a4b1f85dc1bea49d79bc6061b5a8);
+            ).addTo(map_dde0944375c9fe2bedc33a7c563e22eb);
         
     
-        var popup_d8a4128fc9de0bbb7a9676fbbe09fed3 = L.popup({"maxWidth": "100%"});
-
-        
-            
-                var html_a0d057f5947561e670ef7ba1bf12931f = $(`<div id="html_a0d057f5947561e670ef7ba1bf12931f" style="width: 100.0%; height: 100.0%;">Ankara, Türkiye'nin başkenti!</div>`)[0];
-                popup_d8a4128fc9de0bbb7a9676fbbe09fed3.setContent(html_a0d057f5947561e670ef7ba1bf12931f);
-            
-        
-
-        marker_fa9de0d1d81d25ca85cef6eff648df89.bindPopup(popup_d8a4128fc9de0bbb7a9676fbbe09fed3)
-        ;
-
-        
-    
-    
-            marker_fa9de0d1d81d25ca85cef6eff648df89.bindTooltip(
+            marker_6bc26bda54aca221709bd9ea9a9e203d.bindTooltip(
                 `<div>
-                     Tıkla daha fazla bilgi için!
+                     Konum
                  </div>`,
                 {"sticky": true}
             );
