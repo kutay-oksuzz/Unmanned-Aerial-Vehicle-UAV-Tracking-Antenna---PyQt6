@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow,
+    QProgressBar, QPushButton, QSizePolicy, QWidget)
 
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
 from Custom_Widgets.QCustomQPushButton import QCustomQPushButton
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1121, 761)
+        MainWindow.resize(1096, 842)
         font = QFont()
         font.setPointSize(8)
         MainWindow.setFont(font)
@@ -34,10 +34,11 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.widget = AnalogGaugeWidget(self.centralwidget)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(30, 20, 431, 361))
+        self.widget.setGeometry(QRect(630, 10, 301, 271))
+        self.widget.setStyleSheet(u"background-color: transparent;")
         self.pushButton = QCustomQPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(210, 440, 81, 61))
+        self.pushButton.setGeometry(QRect(220, 360, 81, 61))
         self.pushButton.setMaximumSize(QSize(16777215, 16777215))
         font1 = QFont()
         font1.setPointSize(16)
@@ -61,10 +62,10 @@ class Ui_MainWindow(object):
         self.pushButton.setIconSize(QSize(60, 50))
         self.widget_2 = QWebEngineView(self.centralwidget)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setGeometry(QRect(480, 20, 631, 671))
+        self.widget_2.setGeometry(QRect(490, 290, 571, 491))
         self.pushButton_2 = QCustomQPushButton(self.centralwidget)
         self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(290, 510, 81, 61))
+        self.pushButton_2.setGeometry(QRect(300, 430, 81, 61))
         self.pushButton_2.setMaximumSize(QSize(16777215, 16777215))
         self.pushButton_2.setFont(font1)
         self.pushButton_2.setStyleSheet(u"QPushButton#pushButton_2{\n"
@@ -86,7 +87,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setIconSize(QSize(60, 50))
         self.pushButton_3 = QCustomQPushButton(self.centralwidget)
         self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setGeometry(QRect(210, 580, 81, 61))
+        self.pushButton_3.setGeometry(QRect(220, 500, 81, 61))
         self.pushButton_3.setMaximumSize(QSize(16777215, 16777215))
         self.pushButton_3.setFont(font1)
         self.pushButton_3.setStyleSheet(u"QPushButton#pushButton_3{\n"
@@ -108,7 +109,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setIconSize(QSize(60, 50))
         self.pushButton_4 = QCustomQPushButton(self.centralwidget)
         self.pushButton_4.setObjectName(u"pushButton_4")
-        self.pushButton_4.setGeometry(QRect(130, 510, 81, 61))
+        self.pushButton_4.setGeometry(QRect(140, 430, 81, 61))
         self.pushButton_4.setMaximumSize(QSize(16777215, 16777215))
         self.pushButton_4.setFont(font1)
         self.pushButton_4.setStyleSheet(u"QPushButton#pushButton_4{\n"
@@ -130,7 +131,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setIconSize(QSize(60, 50))
         self.label_13 = QLabel(self.centralwidget)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setGeometry(QRect(260, 710, 582, 40))
+        self.label_13.setGeometry(QRect(290, 800, 582, 40))
         self.label_13.setMaximumSize(QSize(600, 40))
         font2 = QFont()
         font2.setFamilies([u"Roboto Light"])
@@ -140,6 +141,78 @@ class Ui_MainWindow(object):
 "background-color: rgb(98, 98, 162);\n"
 "border-radius: 20px;")
         self.label_13.setAlignment(Qt.AlignCenter)
+        self.widget_3 = AnalogGaugeWidget(self.centralwidget)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setGeometry(QRect(40, 50, 431, 331))
+        self.progressBar = QProgressBar(self.widget_3)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setGeometry(QRect(0, 0, 16, 171))
+        font3 = QFont()
+        font3.setPointSize(1)
+        self.progressBar.setFont(font3)
+        self.progressBar.setStyleSheet(u"")
+        self.progressBar.setMaximum(100)
+        self.progressBar.setValue(0)
+        self.progressBar.setOrientation(Qt.Vertical)
+        self.line = QFrame(self.widget_3)
+        self.line.setObjectName(u"line")
+        self.line.setGeometry(QRect(-40, 80, 61, 16))
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.label = QLabel(self.widget_3)
+        self.label.setObjectName(u"label")
+        self.label.setGeometry(QRect(30, 80, 31, 16))
+        font4 = QFont()
+        font4.setPointSize(10)
+        font4.setBold(True)
+        font4.setItalic(True)
+        self.label.setFont(font4)
+        self.label.setStyleSheet(u"color: rgb(220, 220, 220);")
+        self.closeB = QPushButton(self.centralwidget)
+        self.closeB.setObjectName(u"closeB")
+        self.closeB.setGeometry(QRect(100, 720, 61, 61))
+        font5 = QFont()
+        font5.setPointSize(11)
+        font5.setBold(True)
+        self.closeB.setFont(font5)
+        self.closeB.setStyleSheet(u"QPushButton#closeB{\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(20, 47, 78, 219), stop:1 rgba(85, 98, 112, 226));\n"
+"	color:rgba(255, 255, 255, 210);\n"
+"	border-radius:5px;\n"
+"}\n"
+"QPushButton#closeB:hover{\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(40, 67, 98, 219), stop:1 rgba(105, 118, 132, 256));\n"
+"}\n"
+"QPushButton#closeB:pressed{\n"
+"	padding-left:5px;\n"
+"	padding-top:5px;\n"
+"	background-color:rgba(105, 118, 132, 200);\n"
+"}")
+        self.openB = QPushButton(self.centralwidget)
+        self.openB.setObjectName(u"openB")
+        self.openB.setGeometry(QRect(30, 720, 61, 61))
+        self.openB.setFont(font5)
+        self.openB.setStyleSheet(u"QPushButton#openB{\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(20, 47, 78, 219), stop:1 rgba(85, 98, 112, 226));\n"
+"	color:rgba(255, 255, 255, 210);\n"
+"	border-radius:5px;\n"
+"}\n"
+"QPushButton#openB:hover{\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(40, 67, 98, 219), stop:1 rgba(105, 118, 132, 256));\n"
+"}\n"
+"QPushButton#openB:pressed{\n"
+"	padding-left:5px;\n"
+"	padding-top:5px;\n"
+"	background-color:rgba(105, 118, 132, 200);\n"
+"}")
+        self.label_2 = QLabel(self.centralwidget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setGeometry(QRect(40, 20, 41, 16))
+        font6 = QFont()
+        font6.setPointSize(12)
+        font6.setBold(True)
+        self.label_2.setFont(font6)
+        self.label_2.setStyleSheet(u"color:rgb(2, 207, 196);")
         MainWindow.setCentralWidget(self.centralwidget)
         self.pushButton.raise_()
         self.widget.raise_()
@@ -148,6 +221,10 @@ class Ui_MainWindow(object):
         self.pushButton_3.raise_()
         self.pushButton_4.raise_()
         self.label_13.raise_()
+        self.widget_3.raise_()
+        self.closeB.raise_()
+        self.openB.raise_()
+        self.label_2.raise_()
 
         self.retranslateUi(MainWindow)
 
@@ -157,5 +234,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"\"If you control the code, you control the world.\"", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"0 \u00b0", None))
+        self.closeB.setText(QCoreApplication.translate("MainWindow", u"CLOSE", None))
+        self.openB.setText(QCoreApplication.translate("MainWindow", u"OPEN", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"0\u00b0", None))
     # retranslateUi
 
