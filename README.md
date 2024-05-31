@@ -5,7 +5,7 @@ Unmanned Aerial Vehicle (UAV) Tracking Antenna - PyQt6
 ![Ekran görüntüsü 2024-04-13 132018](https://github.com/kutay-oksuzz/Unmanned-Aerial-Vehicle-UAV-Tracking-Antenna---PyQt6/assets/113855499/5abe6ce3-c9cc-4852-a100-14cbd9e2c7b2)
 
 ## **Active Main Screen**
-![Main Screen Active](https://github.com/kutay-oksuzz/Unmanned-Aerial-Vehicle-UAV-Tracking-Antenna---PyQt6/assets/113855499/b978f401-76af-4c06-8043-8c33702c2677)
+![main_screen](https://github.com/kutay-oksuzz/Unmanned-Aerial-Vehicle-UAV-Tracking-Antenna---PyQt6/assets/113855499/a3328f52-0b8c-4363-8015-35eaf950b33d)
 
 ## **Passive Main Screen**
 ![Main Screen Inactive](https://github.com/kutay-oksuzz/Unmanned-Aerial-Vehicle-UAV-Tracking-Antenna---PyQt6/assets/113855499/9eecc9ce-0050-4ff2-9410-6eaff29649f7)
