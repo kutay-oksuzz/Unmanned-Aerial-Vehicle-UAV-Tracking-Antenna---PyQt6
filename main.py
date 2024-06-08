@@ -1,14 +1,16 @@
 import sys
 import os
+import serial
+import math
 import folium
 from PySide6.QtCore import Qt, QTimer, QUrl, QIODevice, Signal, Slot
 from PySide6.QtGui import QColor, QPainter, QLinearGradient, QBrush, QFontDatabase
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QProgressBar, QVBoxLayout, QComboBox, QMessageBox
 from PySide6.QtSerialPort import QSerialPort, QSerialPortInfo
 import threading
+import numpy as np
 import http.server
 import socketserver
-
 
 from ui_interface import Ui_MainWindow  # Ana uygulamanın UI'sı
 from ui_splash_screen import Ui_SplashScreen  # Splash screen'in UI'sı
@@ -55,7 +57,6 @@ class SplashScreen(QMainWindow):
             self.close()  # Close the splash screen
         self.counter += 0.3
 
-
 class MainWindow(QMainWindow):
     dataReceived = Signal(float, float)  # xDegrees ve AccX için sinyal
     def __init__(self):
@@ -76,8 +77,8 @@ class MainWindow(QMainWindow):
 
         # Map Config
         self.start_http_server()
-        self.current_coords = [39.9334, 32.8597]  # Başlangıç koordinatları Ankara
-        self.initialize_map(self.current_coords)
+        self.triangle_route = self.create_triangle_route()
+        self.current_index = 0
 
         # Timer ile koordinatları düzenli olarak güncelle
         self.timer = QTimer(self)
@@ -86,6 +87,9 @@ class MainWindow(QMainWindow):
 
         # Data GUI Güncelleme
         self.dataReceived.connect(self.update_ui_with_data)
+
+        # pushButton_5 tıklandığında self.on_calculate_button_clicked fonksiyonunu çağır
+        self.ui.pushButton_5.clicked.connect(self.on_calculate_button_clicked)
 
     def init_serial_port(self):
         self.serial = QSerialPort()
@@ -118,13 +122,18 @@ class MainWindow(QMainWindow):
     def read_serial_data(self):
         if self.serial.canReadLine():
             text = self.serial.readLine().data().decode().strip()
-            parts = text.split(',')
-            try:
-                xDegrees = float(parts[0])  # xDegrees değeri
-                AccX = float(parts[1])  # AccX değeri
-                self.dataReceived.emit(xDegrees, AccX)  # Sinyal gönder
-            except (IndexError, ValueError) as e:
-                print(f"Error parsing data: {e}")    
+            if text.startswith("Current Angle:"):  # Sadece mevcut açıyı içeren satırları işle
+                parts = text.split(':')
+                try:
+                    currentAngle = float(parts[1].strip())
+                    self.ui.widget_3.updateValue(currentAngle)
+                    #progressBarValue = self.map_value_to_range(currentAngle, 40, 45)
+                    #╣self.ui.progressBar.setValue(int(progressBarValue))
+                    # Gelen veriyi uygun şekilde işle
+                    print(f"Current Angle from Arduino: {currentAngle}")
+                except (IndexError, ValueError) as e:
+                    print(f"Error parsing data: {e}")
+
 
     def setup_buttons(self):
         self.ui.openB.clicked.connect(self.onOpen)
@@ -161,10 +170,10 @@ class MainWindow(QMainWindow):
         self.layout = QVBoxLayout()
         self.progress_bar = QProgressBar()
         self.progress_bar.setOrientation(Qt.Vertical)  # Dikey yönlendirme
-        self.progress_bar.setMinimum(0)
+        self.progress_bar.setMinimum(50)
         self.progress_bar.setGeometry(50, 100, 50, 200)  # Genişliği 50 piksel olarak ayarlanmıştır.
         self.progress_bar.setMaximum(100)
-        self.progress_bar.setValue(50)  # Örnek bir değer
+        self.progress_bar.setValue(70)  # Örnek bir değer
         self.progress_bar.setTextVisible(True)
         self.progress_bar.setStyleSheet("""
            QProgressBar {
@@ -240,13 +249,29 @@ class MainWindow(QMainWindow):
         thread.daemon = True
         thread.start()
 
+    def create_triangle_route(self):
+            # Belirtilen üçgen rotayı oluştur
+        point1 = [39.932312, 32.824375]  # İlk nokta
+        point2 = [39.926383, 32.822291]  # İkinci nokta
+        point3 = [39.926592, 32.828031]  # Üçüncü nokta
+
+        # Üçgenin kenarları arasında koordinatları hesapla
+        route = []
+        route += self.interpolate_coords(point1, point2, steps=100)
+        route += self.interpolate_coords(point2, point3, steps=100)
+        route += self.interpolate_coords(point3, point1, steps=100)
+        return route
+    
+    def interpolate_coords(self, start, end, steps):
+        lats = np.linspace(start[0], end[0], steps)
+        lons = np.linspace(start[1], end[1], steps)
+        return list(zip(lats, lons))
+
     def initialize_map(self, coords):
         # Harita oluşturuluyor
         web_view = self.ui.widget_2
-        #mapbox_url = "https://api.mapbox.com/styles/v1/{IMPORT YOUR TOKEN}"
-        #m = folium.Map(location=coords, zoom_start=15,tiles='CartoDB dark_matter', attr='Map data © Mapbox')
         mapbox_url = "https://api.mapbox.com/styles/v1/kutayoksuzz/clm6kss5200yr01r4fkao7vzq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia3V0YXlva3N1enoiLCJhIjoiY2xtNmVtZDc0MGJwcDNkbXZoOXFleDdrNiJ9.HwKLX08_1xUhK-nJI2X1HQ"
-        m = folium.Map(location=coords, zoom_start=15,tiles=mapbox_url, attr='Map data © Mapbox')
+        m = folium.Map(location=coords, zoom_start=15,tiles='CartoDB dark_matter', attr='Map data © Mapbox')
         folium.Marker(coords, tooltip='Konum').add_to(m)
         map_file_path = 'map.html'
         m.save(map_file_path)
@@ -259,10 +284,64 @@ class MainWindow(QMainWindow):
         self.initialize_map(coords)
 
     def update_coords(self):
-        # Kuzeye ve doğuya doğru küçük bir adım at
-        self.current_coords[0] += 0.0004  # Enlem
-        self.current_coords[1] += 0.0004  # Boylam
+        self.current_coords = self.triangle_route[self.current_index]
+        self.current_index = (self.current_index + 1) % len(self.triangle_route)
         self.update_map(self.current_coords)
+
+        # Kullanıcı tarafından girilen anten konumunu kontrol et ve açı hesapla
+        if hasattr(self, 'antenna_coords'):
+            angle = self.calculate_angle(self.antenna_coords, self.current_coords)
+            y_coord = self.calculate_y_angle(self.antenna_coords, self.current_coords, self.antenna_h_coord)
+            print(f"Angle: {angle:.2f}")  # Açıyı terminale yazdır
+            print(f"Y Angle: {y_coord}")
+            self.send_angle_to_arduino(angle, y_coord)  # Açıyı Arduino'ya gönder
+
+    def send_angle_to_arduino(self, angle, y_coord):
+        if self.serial.isOpen():
+            # Açıyı string olarak gönderiyoruz
+            self.serial.write(f"H:{angle}\n".encode())
+            #self.serial.write(f"V:{y_coord}\n".encode())
+            print(f"Sent Angle to Arduino: {angle}")
+
+    @Slot()
+    def on_calculate_button_clicked(self):
+        try:
+            x_coord = float(self.ui.lineEdit_3.text())
+            y_coord = float(self.ui.lineEdit.text())
+            h_coord = float(self.ui.lineEdit_2.text())
+
+            self.antenna_coords = (x_coord, y_coord)
+            self.antenna_h_coord = h_coord
+
+            print(f"Antenna Coordinates: X={x_coord}, Y={y_coord}")
+        except ValueError:
+            print("Invalid input. Please enter numeric values for coordinates.")
+
+    def calculate_angle(self, antenna_coords, uav_coords):
+        dx = uav_coords[1] - antenna_coords[1]
+        dy = uav_coords[0] - antenna_coords[0]
+        angle = math.degrees(math.atan2(dx, dy))
+        angle = (angle + 360) % 360  # Açıyı 0-360 aralığına getir
+        return angle
+
+    import math
+
+    def calculate_y_angle(self, antenna_coords, current_coords, antenna_h_coord):
+        # İki nokta arasındaki yatay mesafeyi hesapla
+        horizontal_distance = math.sqrt((current_coords[0] - antenna_coords[0]) ** 2 + (current_coords[1] - antenna_coords[1]) ** 2) * 1000
+        # Yükseklik farkını hesapla
+        height_difference = antenna_h_coord  # Anten yüksekliği
+        
+        # Açıyı hesapla (radyan cinsinden)
+        angle_radians = math.atan2(height_difference, horizontal_distance)
+
+        # Açıyı dereceye çevir
+        angle_degrees = math.degrees(angle_radians)
+        
+        return angle_degrees
+
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
