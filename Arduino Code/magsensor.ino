@@ -1,4 +1,3 @@
-
 #include <Wire.h>
 
 #define HMC5883_ADDRESS 0x1E // 0011110b, HMC5883'ün I2C 7 bit adresi
