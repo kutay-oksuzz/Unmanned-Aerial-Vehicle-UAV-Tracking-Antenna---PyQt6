@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1096</width>
-    <height>842</height>
+    <width>1756</width>
+    <height>908</height>
    </rect>
   </property>
   <property name="font">
@@ -19,24 +19,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="AnalogGaugeWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>10</y>
-      <width>301</width>
-      <height>271</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: transparent;</string>
-    </property>
-   </widget>
    <widget class="QCustomQPushButton" name="pushButton">
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>360</y>
+      <y>380</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -81,10 +68,10 @@ QPushButton#pushButton:pressed{
    <widget class="QWebEngineView" name="widget_2" native="true">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>290</y>
-      <width>571</width>
-      <height>491</height>
+      <x>940</x>
+      <y>110</y>
+      <width>751</width>
+      <height>591</height>
      </rect>
     </property>
    </widget>
@@ -92,7 +79,7 @@ QPushButton#pushButton:pressed{
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>430</y>
+      <y>450</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -138,7 +125,7 @@ QPushButton#pushButton_2:pressed{
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>500</y>
+      <y>520</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -184,7 +171,7 @@ QPushButton#pushButton_3:pressed{
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>430</y>
+      <y>450</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -229,9 +216,9 @@ QPushButton#pushButton_4:pressed{
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>800</y>
-      <width>582</width>
+      <x>160</x>
+      <y>600</y>
+      <width>201</width>
       <height>40</height>
      </rect>
     </property>
@@ -244,7 +231,9 @@ QPushButton#pushButton_4:pressed{
     <property name="font">
      <font>
       <family>Roboto Light</family>
-      <pointsize>14</pointsize>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -253,7 +242,7 @@ background-color: rgb(98, 98, 162);
 border-radius: 20px;</string>
     </property>
     <property name="text">
-     <string>&quot;If you control the code, you control the world.&quot;</string>
+     <string>ANTENNA CONTROL</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -337,7 +326,7 @@ border-radius: 20px;</string>
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>720</y>
+      <y>790</y>
       <width>61</width>
       <height>61</height>
      </rect>
@@ -372,7 +361,7 @@ QPushButton#closeB:pressed{
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>720</y>
+      <y>790</y>
       <width>61</width>
       <height>61</height>
      </rect>
@@ -426,17 +415,437 @@ QPushButton#openB:pressed{
      <string>0°</string>
     </property>
    </widget>
-   <zorder>pushButton</zorder>
-   <zorder>widget</zorder>
-   <zorder>widget_2</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton_3</zorder>
-   <zorder>pushButton_4</zorder>
-   <zorder>label_13</zorder>
-   <zorder>widget_3</zorder>
-   <zorder>closeB</zorder>
-   <zorder>openB</zorder>
-   <zorder>label_2</zorder>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>1290</x>
+      <y>720</y>
+      <width>141</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>600</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto Light</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 220);
+background-color: rgb(98, 98, 162);
+border-radius: 20px;</string>
+    </property>
+    <property name="text">
+     <string>UAV MAP</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="AnalogGaugeWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>10</y>
+      <width>301</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>290</y>
+      <width>141</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>600</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto Light</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 220);
+background-color: rgb(98, 98, 162);
+border-radius: 20px;</string>
+    </property>
+    <property name="text">
+     <string>UAV SPEED</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_4" native="true">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>350</y>
+      <width>370</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pushButton{	
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(20, 47, 78, 219), stop:1 rgba(85, 98, 112, 226));
+	color:rgba(255, 255, 255, 210);
+	border-radius:5px;
+}
+QPushButton#pushButton:hover{	
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(40, 67, 98, 219), stop:1 rgba(105, 118, 132, 226));
+}
+QPushButton#pushButton:pressed{	
+	padding-left:5px;
+	padding-top:5px;
+	background-color:rgba(105, 118, 132, 200);
+}
+
+QPushButton#pushButton_2, #pushButton_3, #pushButton_4, #pushButton_5{	
+	background-color: rgba(0, 0, 0, 0);
+	color:rgba(85, 98, 112, 255);
+}
+QPushButton#pushButton_2:hover, #pushButton_3:hover, #pushButton_4:hover, #pushButton_5:hover{	
+	color:rgba(155, 168, 182, 220);
+}
+QPushButton#pushButton_2:pressed, #pushButton_3:pressed, #pushButton_4:pressed, #pushButton_5:pressed{	
+	padding-left:5px;
+	padding-top:5px;
+	color:rgba(115, 128, 142, 255);
+}</string>
+    </property>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>300</width>
+       <height>420</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/images/background.png);
+border-radius:20px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>300</width>
+       <height>420</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.715909, stop:0 rgba(0, 0, 0, 9), stop:0.375 rgba(0, 0, 0, 50), stop:0.835227 rgba(0, 0, 0, 75));
+border-radius:20px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>280</width>
+       <height>390</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0, 0, 0, 100);
+border-radius:15px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>80</y>
+       <width>151</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:rgba(255, 255, 255, 210);</string>
+     </property>
+     <property name="text">
+      <string>Coordinate</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>200</y>
+       <width>200</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0, 0, 0, 0);
+border:none;
+border-bottom:2px solid rgba(105, 118, 132, 255);
+color:rgba(255, 255, 255, 230);
+padding-bottom:7px;</string>
+     </property>
+     <property name="placeholderText">
+      <string>Y</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>310</y>
+       <width>200</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#pushButton_5{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(20, 47, 78, 219), stop:1 rgba(85, 98, 112, 226));
+	color:rgba(255, 255, 255, 210);
+	border-radius:5px;
+}
+QPushButton#pushButton_5:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(40, 67, 98, 219), stop:1 rgba(105, 118, 132, 226));
+}
+QPushButton#pushButton_5:pressed{
+	padding-left:5px;
+	padding-top:5px;
+	background-color:rgba(105, 118, 132, 200);
+}</string>
+     </property>
+     <property name="text">
+      <string>CALCULATE</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>370</y>
+       <width>141</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Social Media Circled</family>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_7">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Social Media Circled</family>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>T</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_8">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Social Media Circled</family>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>S</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>150</y>
+       <width>200</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0, 0, 0, 0);
+border:none;
+border-bottom:2px solid rgba(105, 118, 132, 255);
+color:rgba(255, 255, 255, 230);
+padding-bottom:7px;</string>
+     </property>
+     <property name="placeholderText">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>250</y>
+       <width>200</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0, 0, 0, 0);
+border:none;
+border-bottom:2px solid rgba(105, 118, 132, 255);
+color:rgba(255, 255, 255, 230);
+padding-bottom:7px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>H</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>820</y>
+      <width>201</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>600</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto Light</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 220);
+background-color: rgb(98, 98, 162);
+border-radius: 20px;</string>
+    </property>
+    <property name="text">
+     <string>CALCULATE ROUTE</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
@@ -458,6 +867,8 @@ QPushButton#openB:pressed{
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../loginui4/res.qrc"/>
+ </resources>
  <connections/>
 </ui>
