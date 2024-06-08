@@ -1,110 +1,150 @@
+
 #include <Wire.h>
-#include <MechaQMC5883.h>
-#include <Stepper.h>
 
-#define STEPS_PER_REVOLUTION 200 // Step motorunun her devirdeki adım sayısı
-#define IN1_PIN 8
-#define IN2_PIN 9
-#define IN3_PIN 10
-#define IN4_PIN 11
+#define HMC5883_ADDRESS 0x1E // 0011110b, HMC5883'ün I2C 7 bit adresi
 
+const int x_offset = 30;
+const int y_offset = 128;
 
-MechaQMC5883 qmc;
-Stepper stepper(STEPS_PER_REVOLUTION, IN1_PIN, IN3_PIN, IN2_PIN, IN4_PIN); // Stepper nesnesini oluştur
+// TB6600 Pin Bağlantıları
+#define STEP_PIN 3
+#define DIR_PIN 2
 
+int motorStepDelay = 1000; // Motor adım gecikmesi (mikrosaniye)
+String receivedData = ""; // Python'dan gelen veriyi saklamak için
+char incomingData[50]; // Gelen veriyi saklamak için bir dizi
+int dataIndex = 0; // Dizideki mevcut indeks
 
-float RateRoll, RatePitch, RateYaw;
-float AccX, AccY, AccZ;
-float AngleRoll, AnglePitch;
-float LoopTimer;
-void gyro_signals(void) {
-  Wire.beginTransmission(0x68);
-  Wire.write(0x1A);
-  Wire.write(0x05);
+void setup() {
+  Serial.begin(115200); // Seri iletişimi başlat
+  Wire.begin(); // I2C iletişimini başlat
+
+  // HMC5883 IC'yi doğru çalışma moduna ayarla
+  Wire.beginTransmission(HMC5883_ADDRESS); // HMC5883 ile iletişimi başlat
+  Wire.write(0x02); // mod register'ı seç
+  Wire.write(0x00); // sürekli ölçüm modu
   Wire.endTransmission();
-  Wire.beginTransmission(0x68);
-  Wire.write(0x1C);
-  Wire.write(0x10);
-  Wire.endTransmission();
-  Wire.beginTransmission(0x68);
-  Wire.write(0x3B);
-  Wire.endTransmission(); 
-  Wire.requestFrom(0x68,6);
-  int16_t AccXLSB = Wire.read() << 8 | Wire.read();
-  int16_t AccYLSB = Wire.read() << 8 | Wire.read();
-  int16_t AccZLSB = Wire.read() << 8 | Wire.read();
-  Wire.beginTransmission(0x68);
-  Wire.write(0x1B); 
-  Wire.write(0x8);
-  Wire.endTransmission();                                                   
-  Wire.beginTransmission(0x68);
-  Wire.write(0x43);
-  Wire.endTransmission();
-  Wire.requestFrom(0x68,6);
-  int16_t GyroX=Wire.read()<<8 | Wire.read();
-  int16_t GyroY=Wire.read()<<8 | Wire.read();
-  int16_t GyroZ=Wire.read()<<8 | Wire.read();
-  RateRoll=(float)GyroX/65.5;
-  RatePitch=(float)GyroY/65.5;
-  RateYaw=(float)GyroZ/65.5;
-  AccX=(float)AccXLSB/4096;
-  AccY=(float)AccYLSB/4096;
-  AccZ=(float)AccZLSB/4096;
-  AngleRoll=atan(AccY/sqrt(AccX*AccX+AccZ*AccZ))*1/(3.142/180);
-  AnglePitch=-atan(AccX/sqrt(AccY*AccY+AccZ*AccZ))*1/(3.142/180);
-}
+  delay(300); // Sensörün başlaması için kısa bir gecikme
 
-
-int startX;
-int lastXDegrees = 0;
-unsigned long previousMillis = 0;
-const long interval = 100; // Okuma aralığı (milisaniye cinsinden)
-
-void setup() 
-{
-  pinMode(13, OUTPUT);
-  digitalWrite(13, HIGH);
-  Wire.setClock(400000);
-  Wire.begin();
-  Wire.beginTransmission(0x68);
-  delay(250);
-  Wire.write(0x6B);
-  Wire.write(0x00);
-  Wire.endTransmission();
-  qmc.init();
-  Serial.begin(115200); 
-  int x, y, z, azimuth;
-  qmc.read(&x, &y, &z, &azimuth);
-  startX = x; // Başlangıç pozisyonunu al
-
-  stepper.setSpeed(5); // Stepper motorun hızını ayarla (rpm cinsinden)
+  // TB6600 Pinlerini çıkış olarak ayarla
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
 }
 
 void loop() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-    // Belirlenen aralıkta manyetometre okuması yap
-    previousMillis = currentMillis;
+  // HMC5883'den veri oku
+  int x, y, z; // üç eksen verisi
+  double currentAngle;
+  Wire.beginTransmission(HMC5883_ADDRESS);
+  Wire.write(0x03); // 3. register'ı seç, X MSB register'ı
+  Wire.endTransmission();
+  Wire.requestFrom(HMC5883_ADDRESS, 6);
 
-    gyro_signals();
+  if (6 <= Wire.available()) {
+    x = Wire.read() << 8 | Wire.read();
+    z = Wire.read() << 8 | Wire.read();
+    y = Wire.read() << 8 | Wire.read();
+  }
 
-    int x, y, z, azimuth;
-    qmc.read(&x, &y, &z, &azimuth);
-    
-    // Başlangıç noktasından itibaren açıyı hesapla
-    int xDegrees = map(x - startX, -2048, 2047, -180, 180); // Manyetometrenin çıkışını dereceye dönüştürme
+  currentAngle = atan2(y + y_offset, x + x_offset) * (180 / 3.141592654);
+  if (currentAngle < 0) {
+    currentAngle += 360;
+  }
 
-    Serial.print(xDegrees);
-    Serial.print(",");
-    Serial.println(AccX);
+  // Mevcut açıyı seri porta yazdır
+  Serial.print("Current Angle: ");
+  Serial.println(currentAngle);
 
-    // Eğer manyetometre verisinde bir değişiklik varsa, hareket ettir
-    if (xDegrees != lastXDegrees) {
-      int degreeDifference = lastXDegrees - xDegrees; // Önceki derece ile şimdiki derece arasındaki farkı hesapla
-      int stepsToMove = degreeDifference * STEPS_PER_REVOLUTION / 90; // 1 derece dönme için gerekli adım sayısı
-      stepper.step(stepsToMove); // Step motorunu döndür
-      lastXDegrees = xDegrees; // Son dereceyi güncelle
+  // Python'dan gelen veriyi oku
+  while (Serial.available() > 0) {
+    char incomingByte = Serial.read();
+    if (incomingByte == '\n') {
+      incomingData[dataIndex] = '\0'; // Diziyi sonlandır
+      receivedData = String(incomingData); // Diziyi String'e dönüştür
+      processReceivedData(currentAngle); // Veriyi işle
+      dataIndex = 0; // Diziyi sıfırla
+    } else {
+      incomingData[dataIndex++] = incomingByte; // Gelen karakteri diziye ekle
+      if (dataIndex >= 50) { // Dizi sınırını kontrol et
+        dataIndex = 0; // Sınır aşılırsa sıfırla
+      }
     }
   }
-  
+  delay(1000); // Her saniyede bir okuma ve gönderme
+}
+
+void processReceivedData(double currentAngle) {
+  if (receivedData.startsWith("H:")) {
+    float targetAngle = receivedData.substring(2).toFloat();
+    Serial.print("Target Angle: ");
+    Serial.println(targetAngle);
+    adjustMotorToTargetAngle(currentAngle, targetAngle);
+  } else if (receivedData.startsWith("V:")) {
+    float targetVerticalAngle = receivedData.substring(2).toFloat();
+    Serial.print("Target Vertical Angle: ");
+    Serial.println(targetVerticalAngle);
+    // Burada dikey motor kontrolü işlemini yapabilirsiniz.
+  }
+}
+
+void adjustMotorToTargetAngle(double currentAngle, float targetAngle) {
+  while (true) {
+    // Açı farkını hesapla
+    double angleDifference = targetAngle - currentAngle;
+
+    // Açı farkını -180 ile 180 arasına getirmek için
+    if (angleDifference > 180) {
+      angleDifference -= 360;
+    } else if (angleDifference < -180) {
+      angleDifference += 360;
+    }
+
+    // Tolerans içinde ise döngüden çık
+    if (abs(angleDifference) <= 1) {
+      break;
+    }
+
+    // Yönü belirle
+    int direction = (angleDifference > 0) ? -1 : 1;
+
+    // Motoru döndür
+    stepMotor(direction);
+
+    // Motorun her adımda mevcut açıya ulaşması için güncel veriyi oku
+    int x, y, z;
+    Wire.beginTransmission(HMC5883_ADDRESS);
+    Wire.write(0x03); // 3. register'ı seç, X MSB register'ı
+    Wire.endTransmission();
+    Wire.requestFrom(HMC5883_ADDRESS, 6);
+
+    if (6 <= Wire.available()) {
+      x = Wire.read() << 8 | Wire.read();
+      z = Wire.read() << 8 | Wire.read();
+      y = Wire.read() << 8 | Wire.read();
+    }
+
+    currentAngle = atan2(y + y_offset, x + x_offset) * (180 / 3.141592654);
+    if (currentAngle < 0) {
+      currentAngle += 360;
+    }
+
+    // Mevcut açıyı seri porta yazdır
+    Serial.print("Current Angle: ");
+    Serial.println(currentAngle);
+
+    delay(50); // Motorun dönmesi için kısa bir gecikme
+  }
+  stopMotor();
+}
+
+void stepMotor(int direction) {
+  digitalWrite(DIR_PIN, direction > 0 ? HIGH : LOW);
+  digitalWrite(STEP_PIN, HIGH);
+  delayMicroseconds(motorStepDelay);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(motorStepDelay);
+}
+
+void stopMotor() {
+  // Motoru durdurmak için herhangi bir işlem gerekmiyor, çünkü adımları durdurduğumuzda motor durur.
 }
